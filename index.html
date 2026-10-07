@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- saved from url=(0055)https://dcoe1-cell.github.io/RIET-Exam-Seating-Planner/ -->
+<html lang="en"><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Internal Exam Seating Planner - RIET</title>
 <style>
 :root{
@@ -24,7 +24,7 @@ button:hover{background:#f7f9fc}button.primary{background:var(--primary);color:#
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}.stat{background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px}.stat small{color:var(--muted)}.stat strong{display:block;font-size:25px;margin-top:4px}
 .table-wrap{overflow:auto;border:1px solid var(--border);border-radius:9px}table{width:100%;border-collapse:collapse;min-width:950px}th,td{border-bottom:1px solid var(--border);padding:8px;text-align:left;vertical-align:top}th{background:#f3f6fa;font-size:12px;position:sticky;top:0;z-index:1}td input{margin:0;padding:7px}.num{width:72px}.center{text-align:center}
 .hall{border:1px solid var(--border);border-radius:10px;padding:14px;margin-top:12px}.hall-head{display:flex;gap:10px;align-items:end;flex-wrap:wrap}.hall-head label{min-width:100px}.hall-head .grow{flex:1;min-width:180px}
-.seat-editor-wrap{overflow:auto;padding-top:12px}.seat-editor{display:grid;gap:5px;width:max-content}.seat-btn{width:54px;height:48px;padding:3px;font-size:10px;line-height:1.1;border-radius:5px}.seat-btn.use{background:#fff;border:1px solid #93a4b8}.seat-btn.vacant{background:#e8edf3;color:#8994a3;text-decoration:line-through;border:1px dashed #aab5c1}
+.seat-editor-wrap{overflow:auto;padding-top:12px}.column-toggle-grid{display:grid;gap:5px;width:max-content;margin-bottom:5px}.column-toggle{width:54px;min-height:42px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border:1px solid var(--border);border-radius:6px;background:#f7f9fc;font-size:10px;font-weight:700;cursor:pointer}.column-toggle input{width:auto;margin:0}.seat-editor{display:grid;gap:5px;width:max-content}.seat-btn{width:54px;height:48px;padding:3px;font-size:10px;line-height:1.1;border-radius:5px}.seat-btn.use{background:#fff;border:1px solid #93a4b8}.seat-btn.vacant{background:#e8edf3;color:#8994a3;text-decoration:line-through;border:1px dashed #aab5c1}.mix-mode-box{display:grid;gap:8px;margin-top:8px;padding:12px;border:1px solid var(--border);border-radius:9px;background:#f9fbfe}.mix-option{display:flex;gap:8px;align-items:flex-start;font-weight:normal}.mix-option input{width:auto;margin:2px 0 0}.mix-option span{line-height:1.35}
 .badge{display:inline-block;padding:4px 8px;border-radius:999px;background:var(--primary2);font-size:12px}.message{padding:10px 12px;border-radius:8px;background:#f6f8fb;color:var(--muted);margin-top:10px}.hidden{display:none!important}
 .batch-actions{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}.batch-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.batch-row{border:1px solid var(--border);border-radius:8px;padding:10px}.batch-name{font-weight:700;margin-bottom:7px}.batch-checks{display:flex;flex-wrap:wrap;gap:10px}.check-item{display:flex;align-items:center;gap:5px;font-weight:normal;font-size:13px}.check-item input{width:auto;margin:0}.session-note{border-left:4px solid var(--primary);background:#f7faff;padding:9px 11px;margin-bottom:12px;font-size:13px}
 .summary-table{min-width:760px}.summary-table input[type=checkbox]{width:auto;margin:0}.summary-total td{font-weight:700;background:#f7f9fc}.muted{color:var(--muted)}
@@ -39,103 +39,98 @@ button:hover{background:#f7f9fc}button.primary{background:var(--primary);color:#
 </head>
 <body>
 <div class="container" id="app">
-  <div class="screen-only">
-    <div class="app-header">
-      <img id="appLogo" class="app-logo" alt="Rajadhani Institute of Engineering and Technology logo">
-      <h1>Internal Exam Seating Planner</h1>
-      <div class="built-by">Built by Exam Cell Autonomous RIET • October 2026</div>
-      <div class="sub">Expandable branches × 5 batch/year slots • FN/AN batch selection • hall-wise vacant seats • consolidated hall statement • individual hall sheets</div>
-    </div>
-
-    <div class="stats">
-      <div class="stat"><small>Branches</small><strong id="statBranches">14</strong></div>
-      <div class="stat"><small>Batch / year slots</small><strong>5</strong></div>
-      <div class="stat"><small>Selected students</small><strong id="statStudents">0</strong></div>
-      <div class="stat"><small>Selected hall seats</small><strong id="statSeats">0</strong></div>
-    </div>
-
-    <div class="card">
-      <div class="section-title">1. Examination details</div>
-      <div class="help">The selected session has its own batch and hall check-box settings, so FN and AN can be configured independently.</div>
-      <div class="grid g4">
-        <label>Examination title<input id="examTitle" value="Internal Examination"></label>
-        <label>Date<input id="examDate" type="date"></label>
-        <label>Session
-          <select id="session"><option value="FN">Forenoon (FN)</option><option value="AN">Afternoon (AN)</option></select>
-        </label>
-        <label>Time<input id="examTime" value="09:30 AM - 12:00 PM"></label>
-      </div>
-      <div class="grid g2" style="margin-top:12px">
-        <label>College / Institution name<input id="collegeName" value="Rajadhani Institute of Engineering and Technology (Autonomous)"></label>
-        <label>Heading / semester description<textarea id="headingText" rows="2" placeholder="Example: Second Semester B.Tech Degree Examination May 2026"></textarea></label>
-      </div>
-      <div class="logo-note" style="margin-top:10px">✓ RIET logo is embedded inside this HTML and will appear at the beginning of every printed page.</div>
-    </div>
-
-    <div class="card">
-      <div class="section-title">2. Student details — <span id="studentBranchCount">14</span> branches × 5 batch/year slots</div>
-      <div class="help">Enter the actual batch years manually below instead of fixed Y1/Y2/Y3/Y4 labels. A fifth batch/year slot is included. The same labels are used in batch selection, programme names, consolidated statements and printouts.</div>
-      <div id="batchYearEditor" class="batch-year-editor"></div>
-      <div class="actions" style="margin-bottom:10px">
-        <button type="button" id="addBranch" class="primary">+ Add Branch</button>
-        <span class="badge">Total branches: <b id="branchCountBadge">14</b></span>
-      </div>
-      <div class="table-wrap"><table style="min-width:1250px"><thead><tr id="studentTableHead"></tr></thead><tbody id="branchBody"></tbody></table></div>
-    </div>
-
-    <div class="card">
-      <div class="section-title">2A. Select batches to include in this session</div>
-      <div id="batchSessionNote" class="session-note"></div>
-      <div class="help">Only checked batches are included when the seating arrangement is generated. FN and AN selections are saved separately.</div>
-      <div class="batch-actions"><button type="button" id="selectAllBatches">Select all batches</button><button type="button" id="clearAllBatches">Clear all batches</button><span class="badge" id="selectedBatchSummary">0 batches • 0 students</span></div>
-      <div id="batchSelector" class="batch-grid"></div>
-    </div>
-
-    <div class="card">
-      <div class="section-title">3. Hall configuration</div>
-      <div class="help">Default layout is 7 rows × 10 columns. Click any position to switch between usable and vacant. Each hall keeps its own pattern.</div>
-      <div class="actions"><button type="button" id="addHall" class="primary">+ Add Hall</button><span class="badge">Click a seat to mark it vacant</span></div>
-      <div id="hallEditor"></div>
-    </div>
-
-    <div class="card">
-      <div class="section-title">3A. Consolidated hall statement / hall selection</div>
-      <div id="hallSessionNote" class="session-note"></div>
-      <div class="help">Tick the halls required for the selected session. “Accommodated” is updated after generation. The grand total is shown at the bottom.</div>
-      <div class="actions" style="margin-bottom:10px"><button type="button" id="selectAllHalls">Select all halls</button><button type="button" id="clearAllHalls">Clear all halls</button></div>
-      <div class="table-wrap"><table class="summary-table"><thead><tr><th>Use</th><th>Hall No.</th><th>Layout</th><th>Physical Positions</th><th>Vacant</th><th>Usable Seats</th><th>Accommodated Students</th></tr></thead><tbody id="hallSummaryBody"></tbody><tfoot id="hallSummaryFoot"></tfoot></table></div>
-    </div>
-
-    <div class="card">
-      <div class="section-title">4. Generate & save</div>
-      <div class="help">The complete setup, including FN/AN batch selections and hall selections, is automatically stored in this browser.</div>
-      <label style="display:flex;gap:8px;align-items:center;font-weight:normal"><input id="alternateGroups" type="checkbox" checked style="width:auto;margin:0"> Mix programmes/years as far as possible while allocating seats.</label>
-      <div class="actions" style="margin-top:12px">
-        <button type="button" id="generate" class="primary">Generate Seating Arrangement</button>
-        <button type="button" id="printBtn">Print Consolidated + Hall Sheets</button>
-        <button type="button" id="csvBtn">Download CSV</button>
-        <button type="button" id="exportBtn">Export Backup (.json)</button>
-        <label class="file-input">Import Backup<input type="file" id="importFile" accept=".json,application/json"></label>
-        <button type="button" id="resetStudents">Clear Student Counts</button>
-        <button type="button" id="resetAll" class="danger">Reset All Saved Data</button>
-        <span id="saveStatus" class="save-status">Auto-save ready</span>
-      </div>
-      <div class="storage-note" style="margin-top:10px">Auto-save uses browser local storage. Export a JSON backup periodically in case browser/site data is cleared.</div>
-      <div id="message" class="message">Configure students, choose the batches for FN/AN, select halls, and generate the arrangement.</div>
-    </div>
-
-    <div id="output" class="hidden">
-      <div class="card">
-        <div class="section-title">Consolidated Seating Allotment</div>
-        <div class="help" id="summary"></div>
-        <div class="table-wrap"><table style="min-width:700px"><thead><tr><th>Programme</th><th>Hall</th><th>Register Number</th></tr></thead><tbody id="consolidatedBody"></tbody></table></div>
-      </div>
-      <div id="hallPreview"></div>
-    </div>
-  </div>
-  <div id="printArea" class="print-area"></div>
+<div class="screen-only">
+<div class="app-header">
+<img alt="Rajadhani Institute of Engineering and Technology logo" class="app-logo" id="appLogo"/>
+<h1>Internal Exam Seating Planner</h1>
+<div class="built-by">Built by Exam Cell Autonomous RIET • October 2026</div>
+<div class="sub">Expandable branches × 5 batch/year slots • FN/AN batch selection • hall-wise vacant seats • consolidated hall statement • individual hall sheets</div>
 </div>
-
+<div class="stats">
+<div class="stat"><small>Branches</small><strong id="statBranches">16</strong></div>
+<div class="stat"><small>Batch / year slots</small><strong>5</strong></div>
+<div class="stat"><small>Selected students</small><strong id="statStudents">0</strong></div>
+<div class="stat"><small>Selected hall seats</small><strong id="statSeats">0</strong></div>
+</div>
+<div class="card">
+<div class="section-title">1. Examination details</div>
+<div class="help">The selected session has its own batch and hall check-box settings, so FN and AN can be configured independently.</div>
+<div class="grid g4">
+<label>Examination title<input id="examTitle" value="Internal Examination"/></label>
+<label>Date<input id="examDate" type="date"/></label>
+<label>Session
+          <select id="session"><option value="FN">Forenoon (FN)</option><option value="AN">Afternoon (AN)</option></select>
+</label>
+<label>Time<input id="examTime" value="09:30 AM - 12:00 PM"/></label>
+</div>
+<div class="grid g2" style="margin-top:12px">
+<label>College / Institution name<input id="collegeName" value="Rajadhani Institute of Engineering and Technology (Autonomous)"/></label>
+<label>Heading / semester description<textarea id="headingText" placeholder="Example: Second Semester B.Tech Degree Examination May 2026" rows="2"></textarea></label>
+</div>
+<div class="logo-note" style="margin-top:10px">✓ RIET logo is embedded inside this HTML and will appear at the beginning of every printed page.</div>
+</div>
+<div class="card">
+<div class="section-title">2. Student details — <span id="studentBranchCount">16</span> branches × 5 batch/year slots</div>
+<div class="help">Enter the actual batch years manually below instead of fixed Y1/Y2/Y3/Y4 labels. A fifth batch/year slot is included. The same labels are used in batch selection, programme names, consolidated statements and printouts.</div>
+<div class="batch-year-editor" id="batchYearEditor"><label>Batch 1 year / label<input data-batch-label="0" placeholder="Example: 2026" type="text" value="2026"/></label><label>Batch 2 year / label<input data-batch-label="1" placeholder="Example: 2025" type="text" value="2025"/></label><label>Batch 3 year / label<input data-batch-label="2" placeholder="Example: 2024" type="text" value="2024"/></label><label>Batch 4 year / label<input data-batch-label="3" placeholder="Example: 2023" type="text" value="2023"/></label><label>Batch 5 year / label<input data-batch-label="4" placeholder="Example: 2022" type="text" value="2022"/></label></div>
+<div class="actions" style="margin-bottom:10px">
+<button class="primary" id="addBranch" type="button">+ Add Branch</button>
+<span class="badge">Total branches: <b id="branchCountBadge">16</b></span>
+</div>
+<div class="table-wrap"><table style="min-width:1250px"><thead><tr id="studentTableHead"><th>Branch</th><th>2026 Prefix</th><th>2026 Count</th><th>2025 Prefix</th><th>2025 Count</th><th>2024 Prefix</th><th>2024 Count</th><th>2023 Prefix</th><th>2023 Count</th><th>2022 Prefix</th><th>2022 Count</th><th>Total</th><th>Action</th></tr></thead><tbody id="branchBody"></tbody></table></div>
+</div>
+<div class="card">
+<div class="section-title">2A. Select batches to include in this session</div>
+<div class="session-note" id="batchSessionNote"></div>
+<div class="help">Only checked batches are included when the seating arrangement is generated. FN and AN selections are saved separately.</div>
+<div class="batch-actions"><button id="selectAllBatches" type="button">Select all batches</button><button id="clearAllBatches" type="button">Clear all batches</button><span class="badge" id="selectedBatchSummary">0 batches • 0 students</span></div>
+<div class="batch-grid" id="batchSelector"></div>
+</div>
+<div class="card">
+<div class="section-title">3. Hall configuration</div>
+<div class="help">Default layout is 7 rows × 10 columns. Click any position to switch between usable and vacant. Use the checkbox above a column to select/unselect the entire column. Each hall keeps its own pattern.</div>
+<div class="actions"><button class="primary" id="addHall" type="button">+ Add Hall</button><span class="badge">Click a seat to mark it vacant</span></div>
+<div id="hallEditor"></div>
+</div>
+<div class="card">
+<div class="section-title">3A. Consolidated hall statement / hall selection</div>
+<div class="session-note" id="hallSessionNote"></div>
+<div class="help">Tick the halls required for the selected session. “Accommodated” is updated after generation. The grand total is shown at the bottom.</div>
+<div class="actions" style="margin-bottom:10px"><button id="selectAllHalls" type="button">Select all halls</button><button id="clearAllHalls" type="button">Clear all halls</button></div>
+<div class="table-wrap"><table class="summary-table"><thead><tr><th>Use</th><th>Hall No.</th><th>Layout</th><th>Physical Positions</th><th>Vacant</th><th>Usable Seats</th><th>Accommodated Students</th></tr></thead><tbody id="hallSummaryBody"></tbody><tfoot id="hallSummaryFoot"></tfoot></table></div>
+</div>
+<div class="card">
+<div class="section-title">4. Generate &amp; save</div>
+<div class="help">The complete setup, including FN/AN batch selections and hall selections, is automatically stored in this browser.</div>
+<div class="mix-mode-box" id="mixModeBox">
+<label class="mix-option"><input checked="" name="mixMode" type="radio" value="asPossible"/><span><b>1)</b> Mix programmes/years as far as possible while allocating seats.</span></label>
+<label class="mix-option"><input name="mixMode" type="radio" value="twoPerHall"/><span><b>2)</b> Mix only two programmes per hall column-wise.</span></label>
+<label class="mix-option"><input name="mixMode" type="radio" value="threePerHall"/><span><b>3)</b> Mix only three programmes per hall column-wise.</span></label>
+</div>
+<div class="actions" style="margin-top:12px">
+<button class="primary" id="generate" type="button">Generate Seating Arrangement</button>
+<button id="printBtn" type="button">Print Consolidated + Hall Sheets</button>
+<button id="csvBtn" type="button">Download CSV</button>
+<button id="exportBtn" type="button">Export Backup (.json)</button>
+<label class="file-input">Import Backup<input accept=".json,application/json" id="importFile" type="file"/></label>
+<button id="resetStudents" type="button">Clear Student Counts</button>
+<button class="danger" id="resetAll" type="button">Reset All Saved Data</button>
+<span class="save-status" id="saveStatus" style="color: var(--ok);">✓ Auto-saved</span>
+</div>
+<div class="storage-note" style="margin-top:10px">Auto-save uses browser local storage. Export a JSON backup periodically in case browser/site data is cleared.</div>
+<div class="message" id="message" style="color: var(--muted);">Configure students, choose the batches for FN/AN, select halls, and generate the arrangement.</div>
+</div>
+<div class="hidden" id="output">
+<div class="card">
+<div class="section-title">Consolidated Seating Allotment</div>
+<div class="help" id="summary"></div>
+<div class="table-wrap"><table style="min-width:700px"><thead><tr><th>Programme</th><th>Hall</th><th>Register Number</th></tr></thead><tbody id="consolidatedBody"></tbody></table></div>
+</div>
+<div id="hallPreview"></div>
+</div>
+</div>
+<div class="print-area" id="printArea"></div>
+</div>
 <script>
 (function(){
 'use strict';
@@ -174,7 +169,7 @@ function ensureProfile(p,hallCount,branchCount=uiBranchCount(),sourceSlots=YEAR_
 function currentProfile(){const k=sessionKey();sessionProfiles[k]=ensureProfile(sessionProfiles[k],halls.length,uiBranchCount());return sessionProfiles[k];}
 function defaultState(){
   const baseHalls=[makeHall('805'),makeHall('804')];
-  return {examTitle:'Internal Examination',examDate:'',session:'FN',examTime:'09:30 AM - 12:00 PM',collegeName:'Rajadhani Institute of Engineering and Technology (Autonomous)',headingText:'',alternateGroups:true,yearSlots:YEAR_SLOTS,batchLabels:DEFAULT_BATCH_LABELS.slice(),
+  return {examTitle:'Internal Examination',examDate:'',session:'FN',examTime:'09:30 AM - 12:00 PM',collegeName:'Rajadhani Institute of Engineering and Technology (Autonomous)',headingText:'',mixMode:'asPossible',yearSlots:YEAR_SLOTS,batchLabels:DEFAULT_BATCH_LABELS.slice(),
     branches:defaultBranches.map((b,i)=>makeBranch(b,i)),
     halls:baseHalls,sessionProfiles:{FN:emptyProfile(baseHalls.length,defaultBranches.length),AN:emptyProfile(baseHalls.length,defaultBranches.length)}};
 }
@@ -186,11 +181,11 @@ function normalizeState(s){
   out.branches=(Array.isArray(s.branches)&&s.branches.length)?s.branches.slice(0,100):d.branches;
   out.branches=out.branches.map((b,i)=>{const fallback=d.branches[i]||makeBranch('Branch '+(i+1),i);return{branch:String(b?.branch||fallback.branch),years:Array.from({length:YEAR_SLOTS},(_,y)=>({prefix:String(b?.years?.[y]?.prefix??fallback.years[y].prefix),count:clampInt(b?.years?.[y]?.count,0,999)}))};});
   out.halls=Array.isArray(s.halls)&&s.halls.length?s.halls.map((h,i)=>{const rows=clampInt(h?.rows,1,15),cols=clampInt(h?.cols,1,15),len=rows*cols,usable=Array.isArray(h?.usable)?h.usable.slice(0,len).map(Boolean):Array(len).fill(true);while(usable.length<len)usable.push(true);return{name:String(h?.name||('Hall '+(i+1))),rows,cols,platform:String(h?.platform||'PLATFORM'),usable};}):d.halls;
-  const oldProfiles=s.sessionProfiles||{}; out.sessionProfiles={FN:ensureProfile(oldProfiles.FN,out.halls.length,out.branches.length,sourceSlots),AN:ensureProfile(oldProfiles.AN,out.halls.length,out.branches.length,sourceSlots)}; out.alternateGroups=s.alternateGroups!==false; return out;
+  const oldProfiles=s.sessionProfiles||{}; out.sessionProfiles={FN:ensureProfile(oldProfiles.FN,out.halls.length,out.branches.length,sourceSlots),AN:ensureProfile(oldProfiles.AN,out.halls.length,out.branches.length,sourceSlots)}; const validMixModes=['asPossible','twoPerHall','threePerHall']; out.mixMode=validMixModes.includes(s.mixMode)?s.mixMode:'asPossible'; return out;
 }
 function loadState(){try{const raw=localStorage.getItem(STORAGE_KEY);return raw?normalizeState(JSON.parse(raw)):defaultState();}catch(e){return defaultState();}}
 function collectBranchState(){return [...$('#branchBody').querySelectorAll('tr')].map((tr,i)=>({branch:tr.querySelector('[data-type="branch"]').value.trim()||('Branch '+(i+1)),years:Array.from({length:YEAR_SLOTS},(_,j)=>{const y=j+1;return{prefix:tr.querySelector(`[data-y="${y}"][data-type="prefix"]`).value.trim()||'REG',count:clampInt(tr.querySelector(`[data-y="${y}"][data-type="count"]`).value,0,999)}})}));}
-function getStateFromUI(){return{examTitle:$('#examTitle').value,examDate:$('#examDate').value,session:sessionKey(),examTime:$('#examTime').value,collegeName:$('#collegeName').value,headingText:$('#headingText').value,alternateGroups:$('#alternateGroups').checked,yearSlots:YEAR_SLOTS,batchLabels:batchLabels.slice(),branches:collectBranchState(),halls:JSON.parse(JSON.stringify(halls)),sessionProfiles:JSON.parse(JSON.stringify(sessionProfiles))};}
+function getStateFromUI(){return{examTitle:$('#examTitle').value,examDate:$('#examDate').value,session:sessionKey(),examTime:$('#examTime').value,collegeName:$('#collegeName').value,headingText:$('#headingText').value,mixMode:(document.querySelector('input[name="mixMode"]:checked')?.value||'asPossible'),yearSlots:YEAR_SLOTS,batchLabels:batchLabels.slice(),branches:collectBranchState(),halls:JSON.parse(JSON.stringify(halls)),sessionProfiles:JSON.parse(JSON.stringify(sessionProfiles))};}
 function saveNow(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(getStateFromUI()));$('#saveStatus').textContent='✓ Auto-saved';$('#saveStatus').style.color='var(--ok)';}catch(e){$('#saveStatus').textContent='Could not save automatically';$('#saveStatus').style.color='var(--danger)';}}
 function scheduleSave(){clearTimeout(saveTimer);$('#saveStatus').textContent='Saving…';saveTimer=setTimeout(saveNow,200);}
 function invalidate(){allocation=[];$('#output').classList.add('hidden');renderHallSummary();}
@@ -216,7 +211,16 @@ function renderBranches(branches){
 }
 function resizeHall(h,rows,cols){const old=h.usable.slice(),or=h.rows,oc=h.cols,next=Array(rows*cols).fill(true);for(let r=0;r<Math.min(rows,or);r++)for(let c=0;c<Math.min(cols,oc);c++)next[r*cols+c]=old[r*oc+c]!==false;h.rows=rows;h.cols=cols;h.usable=next;}
 function renderHalls(){
-  const host=$('#hallEditor');host.innerHTML='';halls.forEach((h,hi)=>{const wrap=document.createElement('div');wrap.className='hall';wrap.innerHTML=`<div class="hall-head"><label>Hall No.<input data-hi="${hi}" data-hfield="name" value="${esc(h.name)}"></label><label>Rows<input data-hi="${hi}" data-hfield="rows" type="number" min="1" max="15" value="${h.rows}"></label><label>Columns<input data-hi="${hi}" data-hfield="cols" type="number" min="1" max="15" value="${h.cols}"></label><label class="grow">Platform label<input data-hi="${hi}" data-hfield="platform" value="${esc(h.platform)}"></label><button type="button" data-all="${hi}">All Usable</button><button type="button" data-none="${hi}">All Vacant</button><button type="button" data-pattern="${hi}">Sample Spaced Pattern</button><button type="button" data-remove="${hi}" class="danger" ${halls.length===1?'disabled':''}>Remove Hall</button></div><div class="help" style="margin:10px 0 0">Usable seats: <b>${h.usable.filter(Boolean).length}</b> / ${h.rows*h.cols}</div>`;const scroll=document.createElement('div');scroll.className='seat-editor-wrap';const grid=document.createElement('div');grid.className='seat-editor';grid.style.gridTemplateColumns=`repeat(${h.cols},54px)`;for(let r=0;r<h.rows;r++)for(let c=0;c<h.cols;c++){const idx=r*h.cols+c,on=h.usable[idx]!==false,b=document.createElement('button');b.type='button';b.dataset.seat=`${hi}|${idx}`;b.className='seat-btn '+(on?'use':'vacant');b.innerHTML=`R${r+1}<br>C${c+1}`;b.title=on?'Usable seat — click to make vacant':'Vacant position — click to make usable';grid.appendChild(b);}scroll.appendChild(grid);wrap.appendChild(scroll);host.appendChild(wrap);});syncProfileHallLengths();updateStats();renderHallSummary();
+  const host=$('#hallEditor');host.innerHTML='';halls.forEach((h,hi)=>{const wrap=document.createElement('div');wrap.className='hall';wrap.innerHTML=`<div class="hall-head"><label>Hall No.<input data-hi="${hi}" data-hfield="name" value="${esc(h.name)}"></label><label>Rows<input data-hi="${hi}" data-hfield="rows" type="number" min="1" max="15" value="${h.rows}"></label><label>Columns<input data-hi="${hi}" data-hfield="cols" type="number" min="1" max="15" value="${h.cols}"></label><label class="grow">Platform label<input data-hi="${hi}" data-hfield="platform" value="${esc(h.platform)}"></label><button type="button" data-all="${hi}">All Usable</button><button type="button" data-none="${hi}">All Vacant</button><button type="button" data-pattern="${hi}">Sample Spaced Pattern</button><button type="button" data-remove="${hi}" class="danger" ${halls.length===1?'disabled':''}>Remove Hall</button></div><div class="help" style="margin:10px 0 0">Usable seats: <b>${h.usable.filter(Boolean).length}</b> / ${h.rows*h.cols} &nbsp; • &nbsp; Use the checkbox above each column to select/unselect that complete column.</div>`;
+    const scroll=document.createElement('div');scroll.className='seat-editor-wrap';
+    const colBar=document.createElement('div');colBar.className='column-toggle-grid';colBar.style.gridTemplateColumns=`repeat(${h.cols},54px)`;
+    for(let c=0;c<h.cols;c++){
+      const states=Array.from({length:h.rows},(_,r)=>h.usable[r*h.cols+c]!==false),allOn=states.every(Boolean),someOn=states.some(Boolean);
+      const lab=document.createElement('label');lab.className='column-toggle';lab.title=`Select/unselect all seats in Column ${c+1}`;
+      const cb=document.createElement('input');cb.type='checkbox';cb.dataset.colToggle=`${hi}|${c}`;cb.checked=allOn;cb.indeterminate=someOn&&!allOn;
+      const txt=document.createElement('span');txt.textContent=`C${c+1}`;lab.appendChild(cb);lab.appendChild(txt);colBar.appendChild(lab);
+    }
+    const grid=document.createElement('div');grid.className='seat-editor';grid.style.gridTemplateColumns=`repeat(${h.cols},54px)`;for(let r=0;r<h.rows;r++)for(let c=0;c<h.cols;c++){const idx=r*h.cols+c,on=h.usable[idx]!==false,b=document.createElement('button');b.type='button';b.dataset.seat=`${hi}|${idx}`;b.className='seat-btn '+(on?'use':'vacant');b.innerHTML=`R${r+1}<br>C${c+1}`;b.title=on?'Usable seat — click to make vacant':'Vacant position — click to make usable';grid.appendChild(b);}scroll.appendChild(colBar);scroll.appendChild(grid);wrap.appendChild(scroll);host.appendChild(wrap);});syncProfileHallLengths();updateStats();renderHallSummary();
 }
 function syncProfileHallLengths(){const bc=uiBranchCount();['FN','AN'].forEach(k=>sessionProfiles[k]=ensureProfile(sessionProfiles[k],halls.length,bc));}
 function groupIndex(bi,y){return bi*YEAR_SLOTS+(y-1);}
@@ -234,8 +238,38 @@ function collectGroups(){
   const profile=currentProfile(),branches=collectBranchState(),groups=[];branches.forEach((b,bi)=>b.years.forEach((yy,j)=>{const y=j+1,idx=groupIndex(bi,y),label=batchLabel(j);if(profile.batchEnabled[idx]===false||yy.count<=0)return;const students=[];for(let k=1;k<=yy.count;k++)students.push({programme:`${b.branch} - ${label}`,branch:b.branch,batch:label,year:y,reg:yy.prefix+String(k).padStart(3,'0')});groups.push({programme:`${b.branch} - ${label}`,students});}));return groups;
 }
 function mixedStudents(groups){const qs=groups.map(g=>({programme:g.programme,items:g.students.slice()})),out=[];let prev='';while(qs.some(q=>q.items.length)){qs.sort((a,b)=>b.items.length-a.items.length);const q=qs.find(x=>x.items.length&&x.programme!==prev)||qs.find(x=>x.items.length),s=q.items.shift();out.push(s);prev=s.programme;}return out;}
+function mixModeValue(){return document.querySelector('input[name="mixMode"]:checked')?.value||'asPossible';}
+function mixModeLabel(mode){return mode==='twoPerHall'?'two programmes per hall, column-wise':mode==='threePerHall'?'three programmes per hall, column-wise':'programmes/years mixed as far as possible';}
+function allocateColumnWise(groups,hallIndices,maxPrograms){
+  const queues=groups.map((g,order)=>({programme:g.programme,items:g.students.slice(),order}));
+  let allocated=0;
+  const result=hallIndices.map(i=>{
+    const h=halls[i],seats=Array(h.rows*h.cols).fill(null);
+    const active=queues.filter(q=>q.items.length).sort((a,b)=>b.items.length-a.items.length||a.order-b.order).slice(0,maxPrograms);
+    let turn=0;
+    for(let c=0;c<h.cols;c++){
+      const positions=[];for(let r=0;r<h.rows;r++){const idx=r*h.cols+c;if(h.usable[idx])positions.push(idx);}
+      if(!positions.length||!active.some(q=>q.items.length))continue;
+      let chosen=null;
+      for(let tries=0;tries<active.length;tries++){
+        const q=active[(turn+tries)%active.length];if(q.items.length){chosen=q;turn=(turn+tries+1)%active.length;break;}
+      }
+      if(!chosen)continue;
+      for(const idx of positions){if(!chosen.items.length)break;seats[idx]=chosen.items.shift();allocated++;}
+    }
+    return{...JSON.parse(JSON.stringify(h)),originalIndex:i,seats};
+  });
+  return{allocation:result,allocated,remaining:queues.reduce((sum,q)=>sum+q.items.length,0)};
+}
 function generateAllocation(){
-  const groups=collectGroups(),students=$('#alternateGroups').checked?mixedStudents(groups):groups.flatMap(g=>g.students),profile=currentProfile(),hallIndices=halls.map((_,i)=>i).filter(i=>profile.hallEnabled[i]!==false);if(!students.length){showMessage('No students are available in the checked batches for this session.',true);return false;}if(!hallIndices.length){showMessage('Select at least one hall in the consolidated hall statement.',true);return false;}const capacity=hallIndices.reduce((s,i)=>s+halls[i].usable.filter(Boolean).length,0);if(students.length>capacity){showMessage(`Insufficient selected hall capacity: ${students.length} students, ${capacity} usable seats. Add/enable ${students.length-capacity} more seats.`,true);return false;}let k=0;allocation=hallIndices.map(i=>{const h=halls[i],seats=Array(h.rows*h.cols).fill(null);for(let x=0;x<seats.length;x++)if(h.usable[x]&&k<students.length)seats[x]=students[k++];return{...JSON.parse(JSON.stringify(h)),originalIndex:i,seats};});renderOutputs(students.length,capacity);renderHallSummary();showMessage(`Seating arrangement generated for ${sessionKey()} using ${groups.length} checked batch(es) and ${hallIndices.length} selected hall(s).`,false);return true;
+  const groups=collectGroups(),totalStudents=groups.reduce((n,g)=>n+g.students.length,0),mode=mixModeValue(),profile=currentProfile(),hallIndices=halls.map((_,i)=>i).filter(i=>profile.hallEnabled[i]!==false);if(!totalStudents){showMessage('No students are available in the checked batches for this session.',true);return false;}if(!hallIndices.length){showMessage('Select at least one hall in the consolidated hall statement.',true);return false;}const capacity=hallIndices.reduce((s,i)=>s+halls[i].usable.filter(Boolean).length,0);if(totalStudents>capacity){showMessage(`Insufficient selected hall capacity: ${totalStudents} students, ${capacity} usable seats. Add/enable ${totalStudents-capacity} more seats.`,true);return false;}
+  if(mode==='twoPerHall'||mode==='threePerHall'){
+    const maxPrograms=mode==='twoPerHall'?2:3,res=allocateColumnWise(groups,hallIndices,maxPrograms);allocation=res.allocation;
+    if(res.remaining>0){allocation=[];$('#output').classList.add('hidden');renderHallSummary();showMessage(`The ${maxPrograms}-programme column-wise rule could place only ${res.allocated} of ${totalStudents} students in the selected halls. Add/enable more halls, increase usable columns, or choose another mixing provision.`,true);return false;}
+  }else{
+    const students=mixedStudents(groups);let k=0;allocation=hallIndices.map(i=>{const h=halls[i],seats=Array(h.rows*h.cols).fill(null);for(let x=0;x<seats.length;x++)if(h.usable[x]&&k<students.length)seats[x]=students[k++];return{...JSON.parse(JSON.stringify(h)),originalIndex:i,seats};});
+  }
+  renderOutputs(totalStudents,capacity);renderHallSummary();showMessage(`Seating arrangement generated for ${sessionKey()} using ${groups.length} checked batch(es), ${hallIndices.length} selected hall(s), and ${mixModeLabel(mode)}.`,false);return true;
 }
 function consolidatedRows(){const map=new Map();allocation.forEach(h=>h.seats.forEach(s=>{if(!s)return;const key=s.programme+'||'+h.name;if(!map.has(key))map.set(key,{programme:s.programme,hall:h.name,regs:[]});map.get(key).regs.push(s.reg);}));return[...map.values()];}
 function selectedHallPrintRows(){const p=currentProfile();return halls.map((h,i)=>{const phys=h.rows*h.cols,u=h.usable.filter(Boolean).length;return{use:p.hallEnabled[i]!==false,name:h.name,layout:`${h.rows} × ${h.cols}`,physical:phys,vacant:phys-u,usable:u,accommodated:allocatedCountByHallIndex(i)};}).filter(x=>x.use);}
@@ -254,7 +288,7 @@ function download(name,text,type){const blob=new Blob([text],{type}),url=URL.cre
 function exportBackup(){saveNow();download(`seating_planner_backup_${new Date().toISOString().slice(0,10)}.json`,JSON.stringify(getStateFromUI(),null,2),'application/json');}
 function importBackup(file){if(!file)return;const reader=new FileReader();reader.onload=()=>{try{applyState(normalizeState(JSON.parse(reader.result)));saveNow();invalidate();showMessage('Backup imported and saved successfully.',false);}catch(e){showMessage('The selected backup file is not valid.',true);}};reader.readAsText(file);}
 function exportCSV(){if(!allocation.length&&!generateAllocation())return;const rows=[['Session','Programme','Hall','Row','Column','Register Number']];allocation.forEach(h=>h.seats.forEach((s,i)=>{if(s)rows.push([sessionKey(),s.programme,h.name,Math.floor(i/h.cols)+1,(i%h.cols)+1,s.reg]);}));download('internal_exam_seating.csv',rows.map(r=>r.map(v=>`"${String(v??'').replace(/"/g,'""')}"`).join(',')).join('\n'),'text/csv;charset=utf-8');}
-function applyState(state){$('#examTitle').value=state.examTitle;$('#examDate').value=state.examDate;$('#session').value=state.session;$('#examTime').value=state.examTime;$('#collegeName').value=state.collegeName;$('#headingText').value=state.headingText;$('#alternateGroups').checked=state.alternateGroups;batchLabels=Array.from({length:YEAR_SLOTS},(_,j)=>String(state.batchLabels?.[j]??DEFAULT_BATCH_LABELS[j]));halls=JSON.parse(JSON.stringify(state.halls));sessionProfiles=JSON.parse(JSON.stringify(state.sessionProfiles));renderBatchYearEditor();renderBranches(state.branches);renderHalls();renderBatchSelector();renderHallSummary();updateStats();const logo=$('#appLogo');if(logo)logo.src=LOGO_DATA;}
+function applyState(state){$('#examTitle').value=state.examTitle;$('#examDate').value=state.examDate;$('#session').value=state.session;$('#examTime').value=state.examTime;$('#collegeName').value=state.collegeName;$('#headingText').value=state.headingText;const mixRadio=document.querySelector(`input[name="mixMode"][value="${state.mixMode||'asPossible'}"]`)||document.querySelector('input[name="mixMode"][value="asPossible"]');if(mixRadio)mixRadio.checked=true;batchLabels=Array.from({length:YEAR_SLOTS},(_,j)=>String(state.batchLabels?.[j]??DEFAULT_BATCH_LABELS[j]));halls=JSON.parse(JSON.stringify(state.halls));sessionProfiles=JSON.parse(JSON.stringify(state.sessionProfiles));renderBatchYearEditor();renderBranches(state.branches);renderHalls();renderBatchSelector();renderHallSummary();updateStats();const logo=$('#appLogo');if(logo)logo.src=LOGO_DATA;}
 function resetAll(){if(!confirm('This will erase all automatically saved seating-planner data from this browser. Continue?'))return;localStorage.removeItem(STORAGE_KEY);allocation=[];$('#output').classList.add('hidden');applyState(defaultState());saveNow();showMessage('All saved data was reset to the default setup.',false);}
 
 $('#branchBody').addEventListener('input',e=>{if(e.target.matches('input')){updateStats();renderBatchSelector();scheduleSave();invalidate();}});
@@ -266,7 +300,7 @@ $('#batchSelector').addEventListener('change',e=>{if(e.target.matches('[data-bat
 $('#selectAllBatches').addEventListener('click',()=>{currentProfile().batchEnabled.fill(true);renderBatchSelector();scheduleSave();invalidate();});
 $('#clearAllBatches').addEventListener('click',()=>{currentProfile().batchEnabled.fill(false);renderBatchSelector();scheduleSave();invalidate();});
 
-$('#hallEditor').addEventListener('change',e=>{const el=e.target;if(el.matches('[data-hfield]')){const hi=clampInt(el.dataset.hi,0,halls.length-1),h=halls[hi],f=el.dataset.hfield;if(f==='rows'||f==='cols'){resizeHall(h,f==='rows'?clampInt(el.value,1,15):h.rows,f==='cols'?clampInt(el.value,1,15):h.cols);}else h[f]=el.value.trim()||(f==='name'?`Hall ${hi+1}`:'PLATFORM');renderHalls();scheduleSave();invalidate();}});
+$('#hallEditor').addEventListener('change',e=>{const el=e.target;if(el.matches('[data-col-toggle]')){const [hi,c]=el.dataset.colToggle.split('|').map(Number),h=halls[hi];for(let r=0;r<h.rows;r++)h.usable[r*h.cols+c]=el.checked;renderHalls();scheduleSave();invalidate();return;}if(el.matches('[data-hfield]')){const hi=clampInt(el.dataset.hi,0,halls.length-1),h=halls[hi],f=el.dataset.hfield;if(f==='rows'||f==='cols'){resizeHall(h,f==='rows'?clampInt(el.value,1,15):h.rows,f==='cols'?clampInt(el.value,1,15):h.cols);}else h[f]=el.value.trim()||(f==='name'?`Hall ${hi+1}`:'PLATFORM');renderHalls();scheduleSave();invalidate();}});
 $('#hallEditor').addEventListener('input',e=>{const el=e.target;if(el.matches('[data-hfield="name"],[data-hfield="platform"]')){const hi=clampInt(el.dataset.hi,0,halls.length-1);halls[hi][el.dataset.hfield]=el.value;renderHallSummary();scheduleSave();}});
 $('#hallEditor').addEventListener('click',e=>{const seat=e.target.closest('[data-seat]');if(seat){const [hi,idx]=seat.dataset.seat.split('|').map(Number);halls[hi].usable[idx]=!halls[hi].usable[idx];renderHalls();scheduleSave();invalidate();return;}const all=e.target.closest('[data-all]');if(all){halls[Number(all.dataset.all)].usable.fill(true);renderHalls();scheduleSave();invalidate();return;}const none=e.target.closest('[data-none]');if(none){halls[Number(none.dataset.none)].usable.fill(false);renderHalls();scheduleSave();invalidate();return;}const pat=e.target.closest('[data-pattern]');if(pat){const h=halls[Number(pat.dataset.pattern)];h.usable=h.usable.map((_,idx)=>{const c=idx%h.cols;return [0,1,4,5,h.cols-2,h.cols-1].includes(c);});renderHalls();scheduleSave();invalidate();return;}const rem=e.target.closest('[data-remove]');if(rem&&halls.length>1){const idx=Number(rem.dataset.remove);halls.splice(idx,1);['FN','AN'].forEach(k=>{sessionProfiles[k]=ensureProfile(sessionProfiles[k],sessionProfiles[k]?.hallEnabled?.length||0,uiBranchCount());if(Array.isArray(sessionProfiles[k].hallEnabled))sessionProfiles[k].hallEnabled.splice(idx,1);sessionProfiles[k]=ensureProfile(sessionProfiles[k],halls.length,uiBranchCount());});renderHalls();scheduleSave();invalidate();}});
 $('#addHall').addEventListener('click',()=>{halls.push(makeHall(String(801+halls.length)));['FN','AN'].forEach(k=>{sessionProfiles[k]=ensureProfile(sessionProfiles[k],halls.length,uiBranchCount());sessionProfiles[k].hallEnabled[halls.length-1]=true;});renderHalls();scheduleSave();invalidate();});
@@ -275,7 +309,7 @@ $('#hallSummaryBody').addEventListener('change',e=>{if(e.target.matches('[data-h
 $('#selectAllHalls').addEventListener('click',()=>{currentProfile().hallEnabled.fill(true);renderHallSummary();scheduleSave();invalidate();});
 $('#clearAllHalls').addEventListener('click',()=>{currentProfile().hallEnabled.fill(false);renderHallSummary();scheduleSave();invalidate();});
 
-['examTitle','examDate','examTime','collegeName','headingText','alternateGroups'].forEach(id=>{const el=$('#'+id);el.addEventListener('input',()=>{scheduleSave();invalidate();});el.addEventListener('change',()=>{scheduleSave();invalidate();});});
+['examTitle','examDate','examTime','collegeName','headingText'].forEach(id=>{const el=$('#'+id);el.addEventListener('input',()=>{scheduleSave();invalidate();});el.addEventListener('change',()=>{scheduleSave();invalidate();});});document.querySelectorAll('input[name="mixMode"]').forEach(el=>el.addEventListener('change',()=>{scheduleSave();invalidate();}));
 $('#session').addEventListener('change',()=>{renderBatchSelector();renderHallSummary();updateStats();scheduleSave();invalidate();});
 $('#generate').addEventListener('click',generateAllocation);
 $('#printBtn').addEventListener('click',()=>{if(!allocation.length&&!generateAllocation())return;buildPrintArea();window.print();});
@@ -286,5 +320,4 @@ $('#resetAll').addEventListener('click',resetAll);
 const state=loadState();applyState(state);saveNow();showMessage('Saved configuration loaded. Five editable batch/year labels plus FN/AN batch/hall selections are stored separately.',false);
 })();
 </script>
-</body>
-</html>
+</body></html>
